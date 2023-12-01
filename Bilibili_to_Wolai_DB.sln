@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33423.256
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Bilibili_to_Wolai_DB", "Bilibili_to_Wolai_DB.pyproj", "{84F9306C-20C0-427B-B3BD-32EB8DA7695D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{84F9306C-20C0-427B-B3BD-32EB8DA7695D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84F9306C-20C0-427B-B3BD-32EB8DA7695D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3E411A3C-2DC7-4EB6-95D2-6E5704622B85}
+	EndGlobalSection
+EndGlobal
