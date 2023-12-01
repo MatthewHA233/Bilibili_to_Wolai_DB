@@ -89,25 +89,23 @@ def create_wolai_row(token, title, collected_time):
     else:
         print(f"Error: {response.status_code} - {response.text}")
 
-# 获取收藏夹信息（这里测试出问题是cookie输入错了）
+# 获取收藏夹信息
 def get_id(name):
     url = 'https://api.bilibili.com/x/web-interface/nav'
-    try:
-        response = requests.get(url=url, headers=headers)
-        response.raise_for_status()  # 这会在HTTP请求错误时抛出异常
-        json_data = response.json()
-        print(json_data)  # 打印看看返回的数据结构
-        mid = json_data['data']['mid']
-        return mid
-    except requests.HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')  # 打印HTTP错误信息
-    except KeyError as err:
-        print(f'KeyError: {err}')  # 打印KeyError信息
-        print(json_data)  # 打印返回的JSON数据以便调试
-
+    response = requests.get(url=url, headers=headers)
+    json_data = response.json()
+    
+    # 打印API响应以检查
+    print("API响应数据（用户信息）:", json_data)
+    
     mid = json_data['data']['mid']
     url = 'https://api.bilibili.com/x/v3/fav/folder/created/list-all?up_mid={}&jsonp=jsonp'.format(mid)
-    json_data = json.loads(requests.get(url=url, headers=headers).text)
+    response = requests.get(url=url, headers=headers)
+    json_data = response.json()
+
+    # 打印API响应以检查
+    print("API响应数据（收藏夹列表）:", json_data)
+    
     favorites_list = json_data['data']['list']
     f = {}
     for i in favorites_list:
@@ -115,6 +113,10 @@ def get_id(name):
         title = re.sub('([^\u4e00-\u9fa5a-zA-Z])', '', i['title']).replace('/','-')
         count = i['media_count']
         f[title] = [id_, count]
+    
+    # 打印解析后的收藏夹信息
+    print("解析后的收藏夹数据:", f)
+    
     return f
 
 def get_favorite_videos(favorite_id):
@@ -211,8 +213,15 @@ def main():
     # 获取收藏夹名字为 "默认收藏夹" 的视频信息
     favorite_name = "默认收藏夹"
     favorites = get_id(favorite_name)
-    favorite_id = favorites[favorite_name][0]
-    favorite_videos = get_favorite_videos(favorite_id)
+
+    # 检查favorites是否包含favorite_name
+    if favorite_name in favorites:
+        favorite_id = favorites[favorite_name][0]
+        favorite_videos = get_favorite_videos(favorite_id)
+        # 后续处理...
+    else:
+        print(f"未能获取名为 {favorite_name} 的收藏夹ID，或返回的数据类型不正确")
+        return  # 退出函数
 
     # 获取 WOLAI API Token
     token = get_or_load_token()
