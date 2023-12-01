@@ -89,10 +89,22 @@ def create_wolai_row(token, title, collected_time):
     else:
         print(f"Error: {response.status_code} - {response.text}")
 
-# 获取收藏夹信息
+# 获取收藏夹信息（这里测试出问题是cookie输入错了）
 def get_id(name):
     url = 'https://api.bilibili.com/x/web-interface/nav'
-    json_data = json.loads(requests.get(url=url, headers=headers).text)
+    try:
+        response = requests.get(url=url, headers=headers)
+        response.raise_for_status()  # 这会在HTTP请求错误时抛出异常
+        json_data = response.json()
+        print(json_data)  # 打印看看返回的数据结构
+        mid = json_data['data']['mid']
+        return mid
+    except requests.HTTPError as http_err:
+        print(f'HTTP error occurred: {http_err}')  # 打印HTTP错误信息
+    except KeyError as err:
+        print(f'KeyError: {err}')  # 打印KeyError信息
+        print(json_data)  # 打印返回的JSON数据以便调试
+
     mid = json_data['data']['mid']
     url = 'https://api.bilibili.com/x/v3/fav/folder/created/list-all?up_mid={}&jsonp=jsonp'.format(mid)
     json_data = json.loads(requests.get(url=url, headers=headers).text)
